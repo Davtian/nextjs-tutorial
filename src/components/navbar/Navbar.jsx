@@ -27,11 +27,7 @@ const links = [
     title: "About",
     url: "/about",
   },
-  {
-    id: 5,
-    title: "Contact",
-    url: "/contact",
-  },
+
   {
     id: 6,
     title: "Dashboard",
