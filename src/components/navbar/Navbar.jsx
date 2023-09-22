@@ -36,7 +36,6 @@ const links = [
 ];
 
 const Navbar = () => {
-  const session = useSession();
 
   return (
     <div className={styles.container}>
@@ -50,11 +49,6 @@ const Navbar = () => {
             {link.title}
           </Link>
         ))}
-        {session.status === "authenticated" && (
-          <button className={styles.logout} onClick={signOut}>
-            Logout
-          </button>
-        )}
       </div>
     </div>
   );
