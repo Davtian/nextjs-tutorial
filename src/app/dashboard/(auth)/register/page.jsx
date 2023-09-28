@@ -1,19 +1,36 @@
-"use client";
 import React, { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [error, setError] = useState(null);
 
   const router = useRouter();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const name = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    const { name, email, password,confirmPassword } = formData;
 
     try {
       const res = await fetch("/api/auth/register", {
@@ -25,12 +42,18 @@ const Register = () => {
           name,
           email,
           password,
+          confirmPassword
         }),
       });
-      res.status === 201 && router.push("/dashboard/login?success=Account has been created");
+      
+      if (res.status === 201) {
+        router.push("/dashboard/login?success=Account has been created");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     } catch (err) {
-      setError(err);
-      console.log(err);
+      setError("Something went wrong. Please try again.");
+      console.error(err);
     }
   };
 
@@ -41,24 +64,42 @@ const Register = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
+          name="name"
           placeholder="Username"
           required
           className={styles.input}
+          value={formData.name}
+          onChange={handleChange}
         />
         <input
-          type="text"
+          type="email"
+          name="email"
           placeholder="Email"
           required
           className={styles.input}
+          value={formData.email}
+          onChange={handleChange}
         />
         <input
           type="password"
+          name="password"
           placeholder="Password"
           required
           className={styles.input}
+          value={formData.password}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          required
+          className={styles.input}
+          value={formData.confirmPassword}
+          onChange={handleChange}
         />
         <button className={styles.button}>Register</button>
-        {error && "Something went wrong!"}
+        {error && <div className={styles.error}>{error}</div>}
       </form>
       <span className={styles.or}>- OR -</span>
       <Link className={styles.link} href="/dashboard/login">
