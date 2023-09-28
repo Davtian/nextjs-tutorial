@@ -12,6 +12,8 @@ const Register = () => {
   });
 
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
 
@@ -80,24 +82,40 @@ const Register = () => {
           value={formData.email}
           onChange={handleChange}
         />
+        <div className={styles.passwordContainer}>
+          <input
+            type={showPassword ? "text" : "password"} 
+            name="password"
+            placeholder="Password"
+            required
+            className={styles.input}
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)} 
+            className={styles.passwordToggle}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+        <div className={styles.passwordContainer}>
         <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          className={styles.input}
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
+          type={showConfirmPassword ? "text" : "password"} 
           name="confirmPassword"
           placeholder="Confirm Password"
           required
           className={styles.input}
           value={formData.confirmPassword}
           onChange={handleChange}
-        />
+        />  <button
+        type="button"
+        onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+        className={styles.passwordToggle}
+      >
+        {showConfirmPassword ? "Hide" : "Show"}
+      </button></div>
         <button className={styles.button}>Register</button>
         {error && <div className={styles.error}>{error}</div>}
       </form>
