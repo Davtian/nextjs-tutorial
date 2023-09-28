@@ -6,13 +6,11 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.item}>
         <h1 className={styles.title}>
-          Better design for your digital products.
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit.?
         </h1>
         <p className={styles.desc}>
-          Turning your Idea into Reality. We bring together the teams from the
-          global tech industry.
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit.?
         </p>
-        <Button url="/portfolio" text="See Our Works"/>
       </div>
       <div className={styles.item}>
       </div>
