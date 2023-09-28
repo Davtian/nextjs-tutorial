@@ -1,60 +1,71 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./page.module.css";
-import { signIn,  } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React from 'react';
+import { Button, Form, Input } from 'antd';
 import Link from "next/link";
 
-const Login = ({ url }) => {
-  const params = useSearchParams();
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+const onFinish = (values) => {
+  console.log('Success:', values);
+};
+const onFinishFailed = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+const Login = () => (
+  <Form
+    name="basic"
+    labelCol={{
+      span: 8,
+    }}
+    wrapperCol={{
+      span: 16,
+    }}
+    style={{
+      maxWidth: 600,
+    }}
+    initialValues={{
+      remember: true,
+    }}
+    onFinish={onFinish}
+    onFinishFailed={onFinishFailed}
+    autoComplete="off"
+  >
+    <Form.Item
+      label="Username"
+      name="username"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your username!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
 
-  useEffect(() => {
-    setError(params.get("error"));
-    setSuccess(params.get("success"));
-  }, [params]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[1].value;
-
-    signIn("credentials", {
-      email,
-      password,
-    });
-  };
-
-  return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>{success ? success : "Welcome Back"}</h1>
-      <h2 className={styles.subtitle}>Please sign in to see the dashboard.</h2>
-
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="text"
-          placeholder="Email"
-          required
-          className={styles.input}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          className={styles.input}
-        />
-        <button className={styles.button}>Login</button>
-        {error && error}
-      </form>
-  
-      <span className={styles.or}>- OR -</span>
-      <Link className={styles.link} href="/dashboard">
+    <Form.Item
+      label="Password"
+      name="password"
+      rules={[
+        {
+          required: true,
+          message: 'Please input your password!',
+        },
+      ]}
+    >
+      <Input.Password />
+    </Form.Item>
+    <Form.Item
+      wrapperCol={{
+        offset: 8,
+        span: 16,
+      }}
+    >
+      <Button type="primary" htmlType="submit">
+        Submit
+      </Button>
+    </Form.Item>
+    <Link  href="/dashboard">
         Create new account
       </Link>
-  
-    </div>
-  );
-};
-
+  </Form>
+);
 export default Login;
